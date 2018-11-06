@@ -1,0 +1,23 @@
+[django]
+debug           = True
+secret          = xxxxxxxxxx
+allowed_hosts   = *
+language_code   = en-us
+time_zone       = UTC
+static_root     = /var/www/html/static
+media_root      = /data/duders.club/media
+sqlite_db       = db.sqlite3
+
+[logging]
+app_level       = DEBUG
+app_handler     = console
+django_level    = INFO
+django_handler  = console
+log_file        = django.log
+
+[database]
+name            = database
+user            = database
+pass            = xxxxxxxxxx
+host            = mysql
+port            = 3306

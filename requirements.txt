@@ -1,0 +1,4 @@
+django<3
+gunicorn
+mysqlclient
+requests

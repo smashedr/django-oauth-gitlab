@@ -1,0 +1,14 @@
+[
+  {
+    "model": "oauth.Oauth",
+    "pk": 1,
+    "fields": {
+      "client_id": "xxxxxxxxxx",
+      "client_secret": "xxxxxxxxxx",
+      "redirect_uri": "https://dev.twitch.tv/docs/authentication/",
+      "response_type": "code",
+      "grant_type": "authorization_code",
+      "scope": "user_read"
+    }
+  }
+]

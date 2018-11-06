@@ -1,0 +1,91 @@
+{% load staticfiles %}
+{% load home_tags %}
+
+<!doctype html>
+<html lang="en">
+<head>
+	<!-- Required tags for bootstrap -->
+	<meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+	<!-- Meta -->
+	<meta name="author" content="Shane Rice"/>
+	<meta name="title" content="Django Bootstrap Awesomeness"/>
+	<meta name="description" content="Coming soon to a GitLab near you..."/>
+
+	<meta property="og:author" content="Shane Rice">
+	<meta property="og:title" content="Django Bootstrap Awesomeness">
+	<meta property="og:description" content="Coming soon to a GitLab near you...">
+	<meta property="og:type" content="website">
+	<meta property="og:url" content="{{ request.scheme }}://{{ request.META.HTTP_HOST }}{% url 'home.index' %}">
+	<meta property="og:image" content="{{ request.scheme }}://{{ request.META.HTTP_HOST }}{% static 'images/logo.png' %}">
+	<meta property="og:image:type" content="image/png">
+
+	<title>Django Bootstrap Awesomeness - {% block title %}{% endblock %}</title>
+
+	<!-- Media -->
+	<link rel="icon" href="{% static 'images/logo.png' %}">
+
+	<link href="{% static 'bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+	<link href="{% static 'font-awesome/css/all.min.css' %}" rel="stylesheet">
+	<link href="{% static 'main/css/main.css' %}" rel="stylesheet">
+
+	{% block head %}{% endblock %}
+</head>
+<body>
+
+<!-- Main content -->
+<div class="container-fluid">
+    {% block heading %}
+        <nav class="navbar navbar-expand-md navbar-dark bg-dark mt-2">
+            <a class="navbar-brand" href="{% url 'home.index' %}">Menu</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor02"
+                    aria-controls="navbarColor02" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarColor02">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item {% block home_active %}{% endblock %}">
+                        <a class="nav-link" href="{% url 'home.index' %}">Home</a>
+                    </li>
+                </ul>
+
+                {% if not request.user.is_authenticated %}
+                    <a href="{% url 'oauth.login' %}?next={{ request.path }}" class="btn btn-outline-info" role="button">
+                        Log In
+                        <i class="fas fa-sign-in-alt"></i></a>
+                {% else %}
+                    <a href="https://git.cssnr.com/{{ request.user.username }}" target="_blank" class="text-info mr-3">
+                        {% if request.user.first_name %}{{ request.user.first_name }}{% else %}{{ request.user.username }}{% endif %}</a>
+                    {% if user.is_staff %}
+                        <a href="{% url 'admin:index' %}" class="btn btn-outline-secondary mr-1" role="button">
+                            Admin
+                            <i class="fas fa-rocket"></i></a>
+                    {% endif %}
+                    <a href="" class="log-out btn btn-outline-info" role="button">
+                        Log Out
+                        <i class="fas fa-sign-out-alt"></i></a>
+                {% endif %}
+            </div>
+        </nav>
+    {% endblock %}
+
+    {% block body %}{% endblock %}
+</div>
+
+<!-- JS imported at end to improve page loads -->
+<script type="text/javascript" src="{% static 'bootstrap/jquery.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'bootstrap/popper.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'main/js/main.js' %}"></script>
+
+{% if request.user.is_authenticated %}
+    <form id="log-out" action="{% url 'oauth.logout' %}" method="POST">
+        {% csrf_token %}
+        <input type="hidden" name="next" value="{{ request.get_full_path }}">
+    </form>
+{% endif %}
+
+</body>
+</html>
